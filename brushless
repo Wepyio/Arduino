@@ -1,0 +1,30 @@
+//Motor Brushless(sin escobillas) Velocidad Variable
+int l1 = 11;//lineas del motor
+int l2 = 12;
+int l3 = 13;
+int a = 0;//variable de navegacion en la lista
+int s[6] = {1,1,1,0,0,0};//lista de salidas
+int t = 100;//tiempo maximo entre pasos
+int pushl = 73;//pulsadores de entrada
+int pushm = 74;
+
+void setup(){
+  pinMode(l1, OUTPUT);//lineas del motor
+  pinMode(l2, OUTPUT);
+  pinMode(l3, OUTPUT);
+  pinMode(pushl, INPUT_PULLUP);//entradas con pullup, solo conectar pulsador
+  pinMode(pushm, INPUT_PULLUP);
+}
+
+void loop(){
+  digitalWrite(l1, s[(a)%6]);//escritura a lineas
+  digitalWrite(l2, s[(a + 2)%6]);
+  digitalWrite(l3, s[(a + 4)%6]);
+  a++;//paso
+  delay(t);//pausa entre pasos
+  if(t > 3 && digitalRead(pushm) == 0){//limite de velocidad maxima
+    t--;
+  }else if(t < 100 && digitalRead(pushl) == 0){//limite de velocidad minima
+    t++;
+  }
+}
