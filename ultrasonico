@@ -1,21 +1,25 @@
 //ejemplo de uso de ultrasonico sin librerias
+int baudrate = 9600;
+int sensor = 0;
+int echo = 2;
+int trigger = 4;
+int tiempo, distancia;
+int constante = 58;
 
-int constante = 58; //pasar de microsegundos a centimetros
-int echo = 0; //terminal para activar el envio de sonido
-int trigger = 1; //terminal para medir el tiempo de envio
-int tiempo, distancia; //variables para segundos y centimetros
-
-void setup(){//configuracion de pines
-  pinMode(echo, OUTPUT);
-  pinMode(trigger, INPUT);
+void setup(){
+  Serial.begin(baudrate);
+  pinMode(trigger, OUTPUT);
+  pinMode(echo, INPUT);
 }
 
 void loop(){
-  digitalWrite(echo, LOW);//iniciar en 0 para limpiar salida
+  digitalWrite(trigger, LOW);//iniciar en 0 para limpiar salida
   delayMicroseconds(2);
-  digitalWrite(echo, HIGH);//enviar señal para medir
+  digitalWrite(trigger, HIGH);//enviar señal para medir
   delayMicroseconds(10);
-  digitalWrite(echo, LOW);
-  tiempo = pulseIn(trigger,HIGH);  //medir el tiempo de retorno en microsegundos
-  distancia = tiempo/contante;//para de microsegundos a centimetros
+  digitalWrite(trigger, LOW);
+  tiempo = pulseIn(echo,HIGH);  //medir el tiempo de retorno en microsegundos
+  distancia = tiempo/constante;//para de microsegundos a centimetros
+  Serial.println(distancia);
+  delay(0500);
 }
